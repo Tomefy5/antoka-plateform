@@ -2,6 +2,10 @@
 
 # 🔐 Antoka
 
+<p align="center">
+  <img src="assets/logo/antoka-logo-removebg-with-text.png" alt="System Architecture Diagram" width="300">
+</p>
+
 **AI-Powered Legal Document Platform for Madagascar**
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -78,29 +82,9 @@ In Madagascar, document falsification, identity theft, and lack of reliable proo
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Interface Layer                      │
-│              (React PWA + Dashboard)                    │
-└──────────────────┬──────────────────────────────────────┘
-                   │
-┌──────────────────▼──────────────────────────────────────┐
-│                  API Gateway (Express.js)               │
-│         Auth -  Routing -  Rate Limiting -  Logs           │
-└──┬────────┬────────┬────────┬────────┬────────┬─────────┘
-   │        │        │        │        │        │
-   ▼        ▼        ▼        ▼        ▼        ▼
-┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐
-│ Auth │ │DocGen│ │Clause│ │Collab│ │Block │ │ ...  │
-│      │ │      │ │Analyz│ │      │ │chain │ │      │
-└───┬──┘ └───┬──┘ └───┬──┘ └───┬──┘ └───┬──┘ └──────┘
-    │        │        │        │        │
-    ▼        ▼        ▼        ▼        ▼
-┌───────────────────────────────────────────────────────┐
-│         Supabase -  IndexedDB -  Google Docs            │
-│         Ollama -  Gemini -  TensorFlow -  Hedera         │
-└───────────────────────────────────────────────────────┘
-```
+<p align="center">
+  <img src="assets/images/antoka-architecture-global.png" alt="System Architecture Diagram" width="800">
+</p>
 
 ---
 
