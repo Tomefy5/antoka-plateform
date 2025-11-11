@@ -1,0 +1,108 @@
+# ---------------------------------------
+# Logs & diagnostics
+# ---------------------------------------
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# ---------------------------------------
+# Environnements (garder les exemples)
+# ---------------------------------------
+.env
+.env.*
+!.env.example
+!infra/env/.env.example
+.env.local
+.env.development
+.env.production
+.env.test
+.envrc
+
+# ---------------------------------------
+# Dépendances & caches
+# ---------------------------------------
+node_modules/
+bower_components/
+jspm_packages/
+web_modules/
+# Caches outils
+.eslintcache
+.stylelintcache
+.npm
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.rpt2_cache/
+.rts2_cache_*
+.parcel-cache
+.cache
+.nx/
+.turbo/
+node_modules/.cache/
+
+# ---------------------------------------
+# Build artifacts (multi-packages)
+# ---------------------------------------
+dist/
+build/
+out/
+
+# Frameworks (au besoin selon services/apps)
+.next/
+.nuxt/
+.svelte-kit/
+.serverless/
+.vuepress/dist
+.docusaurus/
+.storybook-out/
+
+# ---------------------------------------
+# Tests & couverture
+# ---------------------------------------
+coverage/
+.nyc_output/
+junit.xml
+cypress/videos/
+cypress/screenshots/
+playwright-report/
+test-results/
+
+# ---------------------------------------
+# TypeScript
+# ---------------------------------------
+*.tsbuildinfo
+
+# ---------------------------------------
+# IDE & systèmes
+# ---------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+.vscode-test
+*.swp
+*.swo
+
+# ---------------------------------------
+# Packages & artefacts
+# ---------------------------------------
+*.tgz
+*.zip
+
+# ---------------------------------------
+# Docker & déploiement locaux (optionnel)
+# ---------------------------------------
+docker-compose.override.yml
+tmp/
+.temp/
