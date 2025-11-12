@@ -4,3 +4,8 @@ export interface SignupPayload {
     fullName: string;
     organizationId?: string;
 }
+
+export interface LoginPayload {
+    email: string,
+    password: string
+}

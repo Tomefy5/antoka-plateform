@@ -24,3 +24,13 @@ export const signupValidator = [
         .optional()
         .isUUID().withMessage('ID organisation invalide')
 ];
+
+export const LoginValidator = [
+    body('email')
+        .isEmail().withMessage("Email invalide")
+        .normalizeEmail(),
+    body('password')
+        .isString()
+        .isLength({ min: 1 })
+        .withMessage("Mot de passe requis")
+]
