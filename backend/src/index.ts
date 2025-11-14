@@ -6,6 +6,7 @@ import cors from "cors";
 import { ErrorRequestHandler } from "express";
 
 import authRouter from "./routes/auth.routes";
+import docgenRouter from "./routes/docgen.routes"
 import { AppError } from "./middlewares/errorHandler";
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.urlencoded());
 
 // Routes
 app.use("/api/auth", authRouter);
+app.use("/api/docgen", docgenRouter);
 
 
 app.get("/", (_req, res) => {
