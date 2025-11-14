@@ -63,7 +63,7 @@ export default function HeroSection() {
                             <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-3xl blur-3xl"></div>
                             <div className="relative bg-card border-2 border-border rounded-2xl p-8 shadow-2xl">
                                 <img
-                                    src="/antoka-logo.jpg"
+                                    src="/assets/antoka-dashboard.png"
                                     alt="Antoka Dashboard"
                                     className="w-full h-auto rounded-lg"
                                 />

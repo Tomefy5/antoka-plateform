@@ -80,7 +80,7 @@ export default function SignupPage() {
             <Card className="w-full max-w-md shadow-xl">
                 <CardHeader className="text-center">
                     <img
-                        src="/antoka-logo.jpg"
+                        src="/favicon/favicon.svg"
                         alt="Antoka"
                         className="w-20 h-20 mx-auto mb-4 object-contain"
                     />

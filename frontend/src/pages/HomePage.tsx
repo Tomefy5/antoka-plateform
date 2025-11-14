@@ -4,10 +4,19 @@ import FeaturesSection from "@/components/sections/FeaturesSection"
 import HowItWorks from "@/components/sections/HowItWorks"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import Navbar from "@/components/layout/Navbar"
+import Footer from "@/components/layout/Footer"
 
 export default function HomePage() {
+
+    const navigate = useNavigate();
+
     return (
         <div className="min-h-screen">
+
+            <Navbar isAuthenticated={false} />
+
             <HeroSection />
             <ValueProposition />
             <FeaturesSection />
@@ -28,6 +37,7 @@ export default function HomePage() {
                     </Button>
                 </div>
             </section>
+            <Footer />
         </div>
     )
 }
