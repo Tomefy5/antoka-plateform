@@ -49,7 +49,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/20 to-background p-4">
+        <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background via-muted/20 to-background p-4">
             {/* Back to home */}
             <Link
                 to="/"
@@ -61,11 +61,13 @@ export default function LoginPage() {
 
             <Card className="w-full max-w-md shadow-xl">
                 <CardHeader className="text-center">
-                    <img
-                        src="/favicon/favicon.svg"
-                        alt="Antoka"
-                        className="w-20 h-20 mx-auto mb-4 object-contain"
-                    />
+                    <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-linear-to-br from-secondary/20 via-secondary/40 to-secondary/20 shadow-lg ring-2 ring-secondary/40 ring-offset-2 ring-offset-background">
+                        <img
+                            src="/favicon/favicon.svg"
+                            alt="Antoka"
+                            className="h-[98%] w-[98%] object-contain"
+                        />
+                    </div>
                     <CardTitle className="text-2xl font-heading">Connexion</CardTitle>
                     <CardDescription>
                         Accédez à votre compte Antoka

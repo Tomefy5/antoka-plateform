@@ -13,17 +13,34 @@ import { authService } from '@/services/auth.service'
 
 // Schéma de validation avec confirmation password
 const signupSchema = z.object({
-    fullName: z.string().min(2, 'Nom complet requis (min 2 caractères)'),
-    email: z.string().email('Email invalide'),
+    fullName: z.string()
+        .trim()
+        .min(2, 'Nom complet requis (min 2 caractères)')
+        .max(100, 'Nom trop long (max 100 caractères)'),
+
+    email: z.string()
+        .email('Email invalide')
+        .transform(val => val.toLowerCase()), // normalizeEmail équivalent
+
     password: z.string()
-        .min(8, 'Minimum 8 caractères')
-        .regex(/[A-Z]/, 'Au moins une majuscule')
-        .regex(/[0-9]/, 'Au moins un chiffre'),
+        .min(8, 'Mot de passe min 8 caractères')  // ⚠️ Note: backend dit "min 12" dans le message mais check min 8
+        .regex(/[a-z]/, 'Doit contenir une minuscule')
+        .regex(/[A-Z]/, 'Doit contenir une majuscule')
+        .regex(/[0-9]/, 'Doit contenir un chiffre')
+        .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Doit contenir un caractère spécial'),
+
     passwordConfirm: z.string()
+        .min(1, 'Confirmation du mot de passe requise'),
+
+    organizationId: z.string()
+        .uuid('ID organisation invalide')
+        .optional()
+        .or(z.literal('')) // Permet une chaîne vide
 }).refine((data) => data.password === data.passwordConfirm, {
     message: 'Les mots de passe ne correspondent pas',
     path: ['passwordConfirm']
 })
+
 
 type SignupFormData = z.infer<typeof signupSchema>
 
@@ -31,14 +48,13 @@ export default function SignupPage() {
     const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false)
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
 
     const {
         register,
         handleSubmit,
         watch,
-        formState: { errors }
+        formState: { errors, isSubmitting }
     } = useForm<SignupFormData>({
         resolver: zodResolver(signupSchema)
     })
@@ -53,22 +69,23 @@ export default function SignupPage() {
     }
 
     const onSubmit = async (data: SignupFormData) => {
-        setIsLoading(true)
         setError('')
 
-        const result = await authService.signup(data)
+        try {
+            const result = await authService.signup(data)
 
-        if (result.success) {
-            navigate('/dashboard')
-        } else {
-            setError(result.error || "Erreur lors de l'inscription")
+            if (result.success) {
+                navigate(`/verify-email-pending?email=${encodeURIComponent(data.email)}`)
+            } else {
+                setError("Erreur lors de l'inscription");
+            }
+        } catch {
+            setError("Un problème réseau est survenu, veuillez réessayer plus tard.");
         }
-
-        setIsLoading(false)
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/20 to-background p-4">
+        <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background via-muted/20 to-background p-4">
             <Link
                 to="/"
                 className="absolute top-4 left-4 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -79,11 +96,14 @@ export default function SignupPage() {
 
             <Card className="w-full max-w-md shadow-xl">
                 <CardHeader className="text-center">
-                    <img
-                        src="/favicon/favicon.svg"
-                        alt="Antoka"
-                        className="w-20 h-20 mx-auto mb-4 object-contain"
-                    />
+                    <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-linear-to-br from-secondary/20 via-secondary/40 to-secondary/20 shadow-lg ring-2 ring-secondary/40 ring-offset-2 ring-offset-background">
+                        <img
+                            src="/favicon/favicon.svg"
+                            alt="Antoka"
+                            className="h-[98%] w-[98%] object-contain"
+                        />
+                    </div>
+
                     <CardTitle className="text-2xl font-heading">Créer un compte</CardTitle>
                     <CardDescription>
                         Rejoignez Antoka et simplifiez vos documents légaux
@@ -91,7 +111,7 @@ export default function SignupPage() {
                 </CardHeader>
 
                 <CardContent>
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
                         {error && (
                             <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm">
                                 {error}
@@ -107,6 +127,8 @@ export default function SignupPage() {
                                 placeholder="Jean Dupont"
                                 autoComplete="name"
                                 autoFocus
+                                aria-invalid={!!errors.fullName}
+                                aria-describedby={errors.fullName ? 'fullName-error' : undefined}
                                 {...register('fullName')}
                                 className={errors.fullName ? 'border-destructive' : ''}
                             />
@@ -123,6 +145,8 @@ export default function SignupPage() {
                                 type="email"
                                 placeholder="votre@email.com"
                                 autoComplete="email"
+                                aria-invalid={!!errors.email}
+                                aria-describedby={errors.email ? 'email-error' : undefined}
                                 {...register('email')}
                                 className={errors.email ? 'border-destructive' : ''}
                             />
@@ -139,6 +163,8 @@ export default function SignupPage() {
                                     id="password"
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder="••••••••"
+                                    aria-invalid={!!errors.password}
+                                    aria-describedby={errors.password ? 'password-error' : undefined}
                                     autoComplete="new-password"
                                     {...register('password')}
                                     className={errors.password ? 'border-destructive pr-10' : 'pr-10'}
@@ -146,9 +172,10 @@ export default function SignupPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
+                                    aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                                 >
-                                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    {showPassword ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                                 </button>
                             </div>
 
@@ -190,9 +217,10 @@ export default function SignupPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                                    aria-label={showPassword ? "Masquer la confirmation de mot de passe" : "Afficher la confirmation de mot de passe"}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                                 >
-                                    {showPasswordConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    {showPasswordConfirm ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                                 </button>
                             </div>
                             {errors.passwordConfirm && (
@@ -201,8 +229,8 @@ export default function SignupPage() {
                         </div>
 
                         {/* Submit */}
-                        <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
-                            {isLoading && <Loader2 className="mr-2 w-4 h-4 animate-spin" />}
+                        <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+                            {isSubmitting && <Loader2 className="mr-2 w-4 h-4 animate-spin" />}
                             Créer mon compte
                         </Button>
 

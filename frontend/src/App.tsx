@@ -10,6 +10,8 @@ import DocumentCreatePage from './pages/documents/DocumentCreatePage'
 import DocumentDetailPage from './pages/documents/DocumentDetailPage'
 import DocumentEditPage from './pages/documents/DocumentEditPage'
 import ProfilePage from './pages/ProfilePage'
+import EmailVerificationPending from './pages/auth/EmailVerificationPending'
+import AuthCallback from './pages/auth/AuthCallback'
 
 function App() {
   // Mock auth state (remplace par vrai context plus tard)
@@ -25,6 +27,8 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/verify-email-pending" element={<EmailVerificationPending />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
 
         {/* Protected pages (with navbar) */}
         <Route

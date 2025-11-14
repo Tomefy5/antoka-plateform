@@ -23,5 +23,6 @@ export interface AuthResponse {
             refresh_token: string;
         };
     };
+    message?: string;
     error?: string;
 }

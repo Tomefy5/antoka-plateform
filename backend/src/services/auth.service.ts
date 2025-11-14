@@ -26,7 +26,7 @@ export class AuthService {
                 data: {
                     full_name: fullName // Metadata basique dans auth.users
                 },
-                emailRedirectTo: `${process.env.APP_URL}/auth/confirm` //! Vérifier le bon env
+                emailRedirectTo: `${process.env.APP_URL}:${process.env.FRONTEND_PORT}/auth/callback` //! Vérifier le bon env
             }
         });
 

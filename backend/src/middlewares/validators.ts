@@ -6,7 +6,7 @@ export const signupValidator = [
         .normalizeEmail(),
 
     body('password')
-        .isLength({ min: 8 }).withMessage('Mot de passe min 12 caractères')
+        .isLength({ min: 8 }).withMessage('Mot de passe min 8 caractères')
         .matches(/[a-z]/).withMessage('Doit contenir une minuscule')
         .matches(/[A-Z]/).withMessage('Doit contenir une majuscule')
         .matches(/[0-9]/).withMessage('Doit contenir un chiffre')
